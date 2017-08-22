@@ -47,7 +47,7 @@
 								alt="..." class="img-circle profile_img">
 						</div>
 						<div class="profile_info">
-							<span>欢迎</span>
+							<span>欢迎!!!<s:property value="#session.userType.nameCn" /></span>
 							<h2>${userSession.name }</h2>
 						</div>
 					</div>
@@ -64,7 +64,8 @@
 										class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
 										<li><a href="#">查看报销单</a></li>
-										<li><a href="#">添加报销单</a></li>
+										<li><a
+											href="${pageContext.request.contextPath}/jsp/claim/addVoucher.jsp">添加报销单</a></li>
 									</ul></li>
 								<li><a><i class="fa fa-edit"></i> 请假管理 <span
 										class="fa fa-chevron-down"></span></a>
@@ -72,11 +73,13 @@
 										<li><a href="#">查看请假</a></li>
 										<li><a href="#">申请请假</a></li>
 									</ul></li>
-								<li><a><i class="fa fa-desktop"></i> 统计报表 <span
-										class="fa fa-chevron-down"></span></a>
-									<ul class="nav child_menu">
-										<li><a href="#">统计报表</a></li>
-									</ul></li>
+								<s:if test="#session.userType.id == 2">
+									<li><a><i class="fa fa-desktop"></i> 统计报表 <span
+											class="fa fa-chevron-down"></span></a>
+										<ul class="nav child_menu">
+											<li><a href="#">统计报表</a></li>
+										</ul></li>
+								</s:if>
 								<li><a><i class="fa fa-desktop"></i> 信息中心 <span
 										class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
@@ -99,8 +102,8 @@
 						</a> <a data-toggle="tooltip" data-placement="top" title="锁住"> <span
 							class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
 						</a> <a data-toggle="tooltip" data-placement="top" title="退出"
-							href="login.html"> <span class="glyphicon glyphicon-off"
-							aria-hidden="true"></span>
+							href="${pageContext.request.contextPath}/logout.action"> <span
+							class="glyphicon glyphicon-off" aria-hidden="true"></span>
 						</a>
 					</div>
 					<!-- /menu footer buttons -->
@@ -123,7 +126,8 @@
 									<span class=" fa fa-angle-down"></span>
 							</a>
 								<ul class="dropdown-menu dropdown-usermenu pull-right">
-									<li><a href="login.html"><i
+									<li><a
+										href="${pageContext.request.contextPath}/logout.action"><i
 											class="fa fa-sign-out pull-right"></i> 退出</a></li>
 								</ul></li>
 

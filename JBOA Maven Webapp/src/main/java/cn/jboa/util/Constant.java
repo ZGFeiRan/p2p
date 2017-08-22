@@ -18,5 +18,5 @@ public class Constant {
 	/**
 	 * 用户类型
 	 */
-	public final static String USER_TYPE = "USER_TYPE";
+	public final static String USER_TYPE = "userType";
 }

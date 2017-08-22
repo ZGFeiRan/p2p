@@ -33,10 +33,18 @@ public class LoginAction extends ActionSupport {
 		if (EmptyUtils.isNotEmpty(sysEmployee)) {
 			Map<String, Object> session = ActionContext.getContext().getSession();
 			session.put(Constant.USER_SESSION, sysEmployee);
-			
+			session.put(Constant.USER_TYPE, sysEmployee.getSysPosition());
 			return Action.SUCCESS;
 		}
 		return Action.LOGIN;
+	}
+
+	public String logout() {
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		if (EmptyUtils.isNotEmpty(session)) {
+			session.remove(Constant.USER_SESSION);
+		}
+		return Action.SUCCESS;
 	}
 
 	public String getSn() {
@@ -53,6 +61,14 @@ public class LoginAction extends ActionSupport {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public SysEmployeeService getSysEmployeeService() {
+		return sysEmployeeService;
+	}
+
+	public void setSysEmployeeService(SysEmployeeService sysEmployeeService) {
+		this.sysEmployeeService = sysEmployeeService;
 	}
 
 }
