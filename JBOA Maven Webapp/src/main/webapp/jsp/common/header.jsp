@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <!DOCTYPE HTML >
 <html>
@@ -27,6 +28,7 @@
 
 <link href="${pageContext.request.contextPath}/css/custom.min.css"
 	rel="stylesheet">
+<script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
 </head>
 <body class="nav-md">
 	<div class="container body">
