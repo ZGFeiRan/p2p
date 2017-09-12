@@ -95,7 +95,7 @@
 			<tx:method name="datagrid*" propagation="SUPPORTS"
 				read-only="true" />
 
-			<tx:method name="*" propagation="SUPPORTS" />
+			<tx:method name="*" propagation="REQUIRED" />
 		</tx:attributes>
 	</tx:advice>
 
@@ -123,7 +123,7 @@
 						<!-- 验证码背景颜色渐变，结束颜色 -->
 						<prop key="kaptcha.background.clear.to">248,248,248</prop>
 						<!-- 验证码的字符 -->
-						<prop key="kaptcha.textproducer.char.string">023456789abcdefghjklmnopqrstuvwxyz</prop>
+						<prop key="kaptcha.textproducer.char.string">23456789abcdefghjklmnpqrstuvwxyz</prop>
 						<!-- 验证码字体颜色 -->
 						<prop key="kaptcha.textproducer.font.color">0,0,255</prop>
 						<!-- 验证码的效果，水纹 -->
