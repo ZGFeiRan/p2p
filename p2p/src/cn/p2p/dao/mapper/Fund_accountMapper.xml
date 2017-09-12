@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="cn.p2p.dao.Fund_accountMapper">
+	<insert id="add">
+		INSERT INTO `p2p_netloan`.`fund_account` (
+		`m_id`,
+		`amount`,
+		`create_date`
+		)
+		VALUES
+		(
+		#{m_id},
+		#{amount},
+		#{create_date}
+		);
+	</insert>
+
+	<update id="update">
+		UPDATE `p2p_netloan`.`fund_account`
+		<trim prefix="set" suffixOverrides=",">
+			<if test="m_id !=null and m_id != ''">
+				m_id=#{m_id},
+			</if>
+			<if test="amount !=null and amount != ''">
+				amount=#{amount},
+			</if>
+			<if test="update_date !=null and update_date != ''">
+				update_date=#{update_date},
+			</if>
+		</trim>
+		WHERE
+		`id`= #{id}
+	</update>
+
+	<select id="findByMID" resultType="Fund_account">
+		SELECT
+		*
+		FROM
+		fund_account
+		WHERE
+		m_id = #{m_id}
+	</select>
+
+	<update id="updateByMID">
+		UPDATE `p2p_netloan`.`fund_account`
+		<trim prefix="set" suffixOverrides=",">
+			<if test="amount !=null and amount != ''">
+				amount=#{amount},
+			</if>
+			<if test="update_date !=null and update_date != ''">
+				update_date=#{update_date},
+			</if>
+		</trim>
+		WHERE
+		`m_id`= #{m_id}
+	</update>
+</mapper>

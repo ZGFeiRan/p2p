@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.p2p.dao.LoanpurposeMapper">
+	<select id="getAllCount" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		loanpurpose
+	</select>
+
+	<select id="findByPage" resultType="Loanpurpose">
+		SELECT
+		*
+		FROM
+		loanpurpose
+		LIMIT
+		#{from},
+		#{pageSize}
+	</select>
+
+	<select id="findById" resultType="Loanpurpose">
+		SELECT
+		*
+		FROM
+		loanpurpose
+		WHERE
+		id=#{id}
+	</select>
+
+	<insert id="add">
+		INSERT INTO `p2p_netloan`.`loanpurpose` (
+		`loanpurpose`, `notes`)
+		VALUES
+		(
+		#{loanpurpose},
+		#{notes}
+		);
+	</insert>
+
+	<update id="update">
+		UPDATE `p2p_netloan`.`loanpurpose`
+		<trim prefix="set" suffixOverrides=",">
+			<if test="loanpurpose!=null and loanpurpose!=''">
+				loanpurpose=#{loanpurpose},
+			</if>
+			<if test="notes!=null and notes!=''">
+				notes=#{notes},
+			</if>
+		</trim>
+		WHERE
+		id =#{id}
+	</update>
+
+	<delete id="delete">
+		DELETE
+		FROM
+		`p2p_netloan`.`loanpurpose`
+		WHERE
+		id = #{id}
+	</delete>
+</mapper>

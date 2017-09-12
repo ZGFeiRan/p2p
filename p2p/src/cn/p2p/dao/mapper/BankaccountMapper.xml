@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.p2p.dao.BankaccountMapper">
+
+	<select id="findList" resultType="Bankaccount">
+		SELECT
+		a.*, i.bankname
+		FROM
+		bankaccount a,
+		bankinformation i
+		WHERE
+		a.bankcode = i.bankcode
+		AND m_id =
+		#{m_id}
+		LIMIT
+		#{from},#{pageSize}
+	</select>
+
+	<select id="findListCount" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		bankaccount
+		WHERE
+		m_id = #{m_id}
+	</select>
+
+	<insert id="add" parameterType="Bankaccount">
+		INSERT INTO
+		`p2p_netloan`.`bankaccount` (
+		`m_id`,
+		`bankcode`,
+		`bankaccount`,
+		`accountholder`
+		)
+		VALUES
+		(
+		#{m_id},
+		#{bankcode},
+		#{bankaccount},
+		#{accountholder}
+		);
+	</insert>
+
+	<delete id="del">
+		DELETE
+		FROM
+		bankaccount
+		WHERE
+		id = #{id}
+	</delete>
+</mapper>

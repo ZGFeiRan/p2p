@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.p2p.dao.RoleMapper">
+	<select id="findAll" resultType="Role">
+		SELECT
+		*
+		FROM
+		role
+	</select>
+
+	<select id="findAllPage" resultType="Role">
+		SELECT
+		*
+		FROM
+		role
+		LIMIT
+		#{from},#{pageSize}
+	</select>
+
+	<insert id="add">
+		INSERT INTO `p2p_netloan`.`role` ( `rolename`,
+		`notes`)
+		VALUES
+		(#{rolename}, #{notes});
+	</insert>
+
+	<delete id="delete">
+		DELETE FROM `p2p_netloan`.`role` WHERE id=#{id}
+	</delete>
+
+	<select id="findRoleById" resultType="Role">
+		SELECT
+		*
+		FROM
+		role
+		WHERE
+		id=#{id}
+	</select>
+
+	<update id="update">
+		UPDATE `p2p_netloan`.`role` SET
+		`rolename`=#{rolename}, `notes`=#{notes} WHERE (`id`=#{id});
+	</update>
+
+	<select id="findAllCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM role
+	</select>
+</mapper>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="cn.p2p.dao.BorrowmarkDetailsMapper">
+	<insert id="add">
+		INSERT INTO `p2p_netloan`.`borrowmark_details` (
+		`total_period`,
+		`rest_period`,
+		`next_payment_day`,
+		`approve_date`,
+		`lending_date`,
+		`clear_date`,
+		`liubiao_date`,
+		`value_date`,
+		`finish_date`,
+		`borrow_id`
+		)
+		VALUES
+		(
+		#{total_period},
+		#{rest_period},
+		#{next_payment_day},
+		#{approve_date},
+		#{lending_date},
+		#{clear_date},
+		#{liubiao_date},
+		#{value_date},
+		#{finish_date},
+		#{borrow_id}
+		);
+	</insert>
+
+	<update id="update">
+		UPDATE `p2p_netloan`.`borrowmark_details`
+		<trim prefix="set" suffixOverrides=",">
+			<if test="total_period !=null and total_period !=''">
+				total_period=#{total_period},
+			</if>
+			<if test="rest_period !=null and rest_period !=''">
+				rest_period=#{rest_period},
+			</if>
+			<if test="next_payment_day !=null and next_payment_day !=''">
+				next_payment_day=#{next_payment_day},
+			</if>
+			<if test="approve_date !=null and approve_date !=''">
+				approve_date=#{approve_date},
+			</if>
+			<if test="finish_date !=null and finish_date !=''">
+				finish_date=#{finish_date},
+			</if>
+			<if test="lending_date !=null and lending_date !=''">
+				lending_date=#{lending_date},
+			</if>
+			<if test="clear_date !=null and clear_date !=''">
+				clear_date=#{clear_date},
+			</if>
+			<if test="liubiao_date !=null and liubiao_date !=''">
+				liubiao_date=#{liubiao_date},
+			</if>
+			<if test="value_date !=null and value_date !=''">
+				value_date=#{value_date},
+			</if>
+			<if test="borrow_id !=null and borrow_id !=''">
+				borrow_id=#{borrow_id},
+			</if>
+		</trim>
+		WHERE
+		`id` = #{id}
+	</update>
+
+	<select id="findByBID" resultType="BorrowmarkDetails">
+		SELECT
+		*
+		FROM
+		borrowmark_details
+		WHERE
+		borrow_id = #{borrow_id}
+	</select>
+
+	<select id="findById" resultType="BorrowmarkDetails">
+		SELECT
+		*
+		FROM
+		borrowmark_details
+		WHERE
+		id = #{id}
+	</select>
+</mapper>

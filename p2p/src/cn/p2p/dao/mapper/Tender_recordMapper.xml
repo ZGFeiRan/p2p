@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.p2p.dao.Tender_recordMapper">
+	<select id="findByMID" resultType="Tender_record">
+		SELECT
+		*
+		FROM
+		tender_record
+		WHERE
+		m_id = #{m_id}
+		LIMIT
+		#{from},#{pageSize}
+	</select>
+
+	<select id="findByMIDCount" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		tender_record
+		WHERE
+		m_id = #{m_id}
+	</select>
+
+	<select id="findAll" resultType="Tender_record">
+		SELECT
+		*
+		FROM
+		tender_record
+		WHERE
+		m_id = #{m_id}
+	</select>
+
+	<insert id="add">
+		INSERT INTO `p2p_netloan`.`tender_record` (
+		`borrow_id`,
+		`m_id`,
+		`tender_amount`,
+		`tender_date`,
+		`is_fangkuan`
+		)
+		VALUES
+		(
+		#{borrow_id},
+		#{m_id},
+		#{tender_amount},
+		#{tender_date},
+		#{is_fangkuan}
+		);
+	</insert>
+
+	<select id="findByMidBid" resultType="Tender_record">
+		SELECT
+		*
+		FROM
+		tender_record
+		WHERE
+		borrow_id = #{b_id}
+	</select>
+
+	<update id="update">
+		UPDATE `p2p_netloan`.`tender_record`
+		<trim prefix="set" suffixOverrides=",">
+			<if test="borrow_id != null and borrow_id != ''">
+				borrow_id=#{borrow_id},
+			</if>
+			<if test="m_id != null and m_id != ''">
+				m_id=#{m_id},
+			</if>
+			<if test="tender_amount != null and tender_amount != ''">
+				tender_amount=#{tender_amount},
+			</if>
+			<if test="tender_date != null and tender_date != ''">
+				tender_date=#{tender_date},
+			</if>
+			<if test="is_fangkuan != null and is_fangkuan != ''">
+				is_fangkuan=#{is_fangkuan},
+			</if>
+		</trim>
+		WHERE
+		`id` = #{id}
+	</update>
+</mapper>

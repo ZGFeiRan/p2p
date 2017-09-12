@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+	<!-- 扫描注解 -->
+	<context:component-scan base-package="cn.p2p.service" />
+	<context:component-scan base-package="cn.p2p.dao" />
+
+	<!-- 读取数据源配置文件 -->
+	<context:property-placeholder location="classpath:dataSource.properties" />
+	<!-- JNDI获取数据源(使用dbcp连接池) -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+
+		<property name="driverClassName" value="${driverClassName}" />
+		<property name="url" value="${url}" />
+		<property name="username" value="${uname}" />
+		<property name="password" value="${password}" />
+
+		<!-- 初始化连接大小 -->
+		<property name="initialSize" value="${initialSize}" />
+		<!-- 初始化连接池最大使用连接数量 -->
+		<property name="maxActive" value="${maxActive}" />
+		<!-- 初始化连接池最小空闲 -->
+		<property name="minIdle" value="${minIdle}" />
+		<!-- 初始化连接池最大空闲 -->
+		<property name="maxIdle" value="${maxIdle}" />
+		<!-- 获取连接最大等待时间，单位毫秒 -->
+		<property name="maxWait" value="${maxWait}" />
+
+		<!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" />
+		<!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="25200000" />
+
+		<!-- 心跳包 -->
+		<property name="validationQuery" value="SELECT 1" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+
+		<!-- 是否自动回收超时连接 -->
+		<property name="removeAbandoned" value="${removeAbandoned}" />
+		<!-- 超时时间 -->
+		<property name="removeAbandonedTimeout" value="${removeAbandonedTimeout}" />
+
+	</bean>
+
+
+	<!-- 配置SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:mybatisConfig.xml" />
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations" value="classpath:cn/p2p/dao/mapper/*.xml" />
+	</bean>
+
+	<!-- 扫描mybatis配置文件 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="cn.p2p.dao" />
+	</bean>
+
+	<!-- 配置声明式事务*********************************************************************开始 -->
+	<!-- (事务管理器)transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!--如果是方法中直接抛顶层Exception异常的话,propagation="REQUIRED"是不顶用的,还需要配置rollback-for属性 -->
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="register*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="modify*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="batch*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="time*" propagation="REQUIRED" /><!--定时器方法 -->
+			<tx:method name="repair" propagation="REQUIRED" />
+			<tx:method name="deleteAndRepair" propagation="REQUIRED" />
+
+			<!--以这些单词开头的方法不加入事务 -->
+			<tx:method name="get*" propagation="SUPPORTS" read-only="true" />
+			<tx:method name="find*" propagation="SUPPORTS" read-only="true" />
+			<tx:method name="select*" propagation="SUPPORTS" read-only="true" />
+			<tx:method name="load*" propagation="SUPPORTS" read-only="true" />
+			<tx:method name="search*" propagation="SUPPORTS" read-only="true" />
+			<tx:method name="datagrid*" propagation="SUPPORTS"
+				read-only="true" />
+
+			<tx:method name="*" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:pointcut expression="execution(* cn.p2p.service.*.*(..))"
+			id="transactionPointcut" />
+		<aop:advisor advice-ref="transactionAdvice" pointcut-ref="transactionPointcut" />
+	</aop:config>
+	<!-- 配置声明式事务*********************************************************************结束 -->
+
+	<!-- 配置验证码 -->
+	<bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">
+		<property name="config">
+			<bean class="com.google.code.kaptcha.util.Config">
+				<constructor-arg>
+					<props>
+						<!-- 图片边框 -->
+						<prop key="kaptcha.border">no</prop>
+						<!-- 图片宽度 -->
+						<prop key="kaptcha.image.width">95</prop>
+						<!-- 图片高度 -->
+						<prop key="kaptcha.image.height">45</prop>
+						<!-- 验证码背景颜色渐变，开始颜色 -->
+						<prop key="kaptcha.background.clear.from">248,248,248</prop>
+						<!-- 验证码背景颜色渐变，结束颜色 -->
+						<prop key="kaptcha.background.clear.to">248,248,248</prop>
+						<!-- 验证码的字符 -->
+						<prop key="kaptcha.textproducer.char.string">023456789abcdefghjklmnopqrstuvwxyz</prop>
+						<!-- 验证码字体颜色 -->
+						<prop key="kaptcha.textproducer.font.color">0,0,255</prop>
+						<!-- 验证码的效果，水纹 -->
+						<prop key="kaptcha.obscurificator.impl">com.google.code.kaptcha.impl.WaterRipple</prop>
+						<!-- 验证码字体大小 -->
+						<prop key="kaptcha.textproducer.font.size">35</prop>
+						<!-- 验证码字数 -->
+						<prop key="kaptcha.textproducer.char.length">4</prop>
+						<!-- 验证码文字间距 -->
+						<prop key="kaptcha.textproducer.char.space">2</prop>
+						<!-- 验证码字体 -->
+						<prop key="kaptcha.textproducer.font.names">new Font("Arial", 1, fontSize), new Font("Courier",
+							1, fontSize)</prop>
+						<!-- 不加噪声 -->
+						<prop key="kaptcha.noise.impl">com.google.code.kaptcha.impl.NoNoise</prop>
+					</props>
+				</constructor-arg>
+			</bean>
+		</property>
+	</bean>
+
+</beans>

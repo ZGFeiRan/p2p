@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.p2p.dao.MemberMapper">
+	<select id="findMemberByName" resultType="Member">
+		SELECT *
+		FROM member
+		where
+		username=#{username}
+	</select>
+
+	<select id="findByAdmin" resultType="Member">
+		SELECT
+		*
+		FROM
+		member
+		WHERE
+		r_id > 1
+		<if test="from!=null and pageSize != null">
+			limit #{from},#{pageSize}
+		</if>
+	</select>
+
+	<select id="findByAdminCount" resultType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM
+		member
+		WHERE
+		r_id > 1;
+	</select>
+
+	<delete id="deleteById">
+		DELETE
+		FROM
+		member
+		WHERE
+		id = #{id}
+	</delete>
+
+	<select id="findMemberById" resultType="Member">
+		SELECT
+		*
+		FROM
+		member
+		WHERE
+		id
+		= #{id}
+	</select>
+
+	<update id="alter">
+		UPDATE member
+		<trim prefix="set" suffixOverrides=",">
+			<if test="username!=null and username!=''">
+				username=#{username},
+			</if>
+			<if test="password!=null and password!=''">
+				password=#{password},
+			</if>
+			<if test="paymentpassword!=null and paymentpassword!=''">
+				paymentpassword=#{paymentpassword},
+			</if>
+			<if test="phone!=null and phone!=''">
+				phone=#{phone},
+			</if>
+			<if test="email!=null and email!=''">
+				email=#{email},
+			</if>
+			<if test="registrationtime!=null and registrationtime!=''">
+				registrationtime=#{registrationtime},
+			</if>
+			<if test="r_id!=null and r_id!=''">
+				r_id=#{r_id},
+			</if>
+		</trim>
+		WHERE
+		id = #{id}
+	</update>
+
+	<insert id="add">
+		INSERT INTO `p2p_netloan`.`member` (
+		`username`,
+		`password`,
+		`paymentpassword`,
+		`phone`,
+		`email`,
+		`registrationtime`,
+		`r_id`
+		)
+		VALUES
+		(
+		#{username},
+		#{password},
+		#{paymentpassword},
+		#{phone},
+		#{email},
+		#{registrationtime},
+		#{r_id}
+		);
+	</insert>
+
+	<select id="findAll" resultType="Member">
+		SELECT
+		*
+		FROM
+		member
+		<where>
+			<if test="username != null and username != ''">
+				username like concat('%',#{username},'%')
+			</if>
+		</where>
+		limit
+		#{from},#{pageSize}
+	</select>
+
+
+	<select id="findAllCount" resultType="java.lang.Integer">
+		SELECT
+		COUNT(*)
+		FROM
+		member
+		<where>
+			<if test="username != null and username != ''">
+				username=#{username}
+			</if>
+		</where>
+	</select>
+</mapper>

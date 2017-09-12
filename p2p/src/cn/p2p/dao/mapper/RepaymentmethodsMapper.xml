@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.p2p.dao.RepaymentmethodsMapper">
+	<select id="getAllCount" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		repaymentmethods
+	</select>
+
+	<select id="findByPage" resultType="Repaymentmethods">
+		SELECT
+		*
+		FROM
+		repaymentmethods
+		LIMIT
+		#{from},#{pageSize}
+	</select>
+
+	<select id="findById" resultType="Repaymentmethods">
+		SELECT
+		*
+		FROM
+		repaymentmethods
+		WHERE
+		id=#{id}
+	</select>
+
+	<insert id="add">
+		INSERT INTO `p2p_netloan`.`repaymentmethods` (
+		`repaymentmethods`,
+		`identifiers`,
+		`algorithminformation`
+		)
+		VALUES
+		(
+		#{repaymentmethods},
+		#{identifiers},
+		#{algorithminformation}
+		);
+	</insert>
+
+	<update id="update">
+		UPDATE `p2p_netloan`.`repaymentmethods`
+		<trim prefix="set" suffixOverrides=",">
+			<if test="repaymentmethods!=null and repaymentmethods!=''">
+				repaymentmethods=#{repaymentmethods},
+			</if>
+			<if test="identifiers!=null and identifiers!=''">
+				identifiers=#{identifiers},
+			</if>
+			<if test="algorithminformation!=null and algorithminformation!=''">
+				algorithminformation=#{algorithminformation},
+			</if>
+		</trim>
+		WHERE
+		id=#{id}
+	</update>
+
+	<delete id="delete">
+		DELETE
+		FROM
+		`p2p_netloan`.`repaymentmethods`
+		WHERE
+		id=#{id}
+	</delete>
+</mapper>

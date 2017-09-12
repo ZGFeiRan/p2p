@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.p2p.dao.Repayment_recordMapper">
+	<select id="findPageList" resultType="Repayment_record">
+		SELECT
+		*
+		FROM
+		repayment_record
+		<trim prefix="where" prefixOverrides="and | or">
+			<if test="payee_user_id != null and payee_user_id != ''">
+				and payee_user_id=#{payee_user_id}
+			</if>
+			<if test="payer_user_id != null and payer_user_id != ''">
+				and payer_user_id=#{payer_user_id}
+			</if>
+			<if test="status != null and status != ''">
+				and status=#{status}
+			</if>
+		</trim>
+		ORDER BY
+		actual_return_date DESC,should_return_date DESC
+		limit
+		#{from},#{pageSize}
+	</select>
+
+
+	<select id="findTotal" resultType="java.lang.Integer">
+		SELECT
+		sum(amount)
+		FROM
+		repayment_record
+		<trim prefix="where" prefixOverrides="and | or">
+			<if test="payee_user_id != null and payee_user_id != ''">
+				and payee_user_id=#{payee_user_id}
+			</if>
+			<if test="payer_user_id != null and payer_user_id != ''">
+				and payer_user_id=#{payer_user_id}
+			</if>
+			<if test="status != null and status != ''">
+				and status=#{status}
+			</if>
+		</trim>
+	</select>
+
+	<select id="findListCount" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		repayment_record
+		<trim prefix="where" prefixOverrides="and | or">
+			<if test="payee_user_id != null and payee_user_id != ''">
+				and payee_user_id=#{payee_user_id}
+			</if>
+			<if test="payer_user_id != null and payer_user_id != ''">
+				and payer_user_id=#{payer_user_id}
+			</if>
+			<if test="status != null and status != ''">
+				and status=#{status}
+			</if>
+		</trim>
+	</select>
+
+	<insert id="add">
+		INSERT INTO `p2p_netloan`.`repayment_record` (
+		`borrow_id`,
+		`payer_user_id`,
+		`payee_user_id`,
+		`period_id`,
+		`amount`,
+		`bj`,
+		`lx`,
+		`should_return_date`,
+		`status`
+		)
+		VALUES
+		(
+		#{borrow_id},
+		#{payer_user_id},
+		#{payee_user_id},
+		#{period_id},
+		#{amount},
+		#{bj},
+		#{lx},
+		#{should_return_date},
+		#{status}
+		);
+	</insert>
+
+	<update id="update">
+		UPDATE `p2p_netloan`.`repayment_record`
+		<trim prefix="set" suffixOverrides=",">
+			<if test="borrow_id !=null and borrow_id != ''">
+				borrow_id=#{borrow_id},
+			</if>
+			<if test="payer_user_id !=null and payer_user_id != ''">
+				payer_user_id=#{payer_user_id},
+			</if>
+			<if test="payee_user_id !=null and payee_user_id != ''">
+				payee_user_id=#{payee_user_id},
+			</if>
+			<if test="period_id !=null and period_id != ''">
+				period_id=#{period_id},
+			</if>
+			<if test="amount !=null and amount != ''">
+				amount=#{amount},
+			</if>
+			<if test="bj !=null and bj != ''">
+				bj=#{bj},
+			</if>
+			<if test="lx !=null and lx != ''">
+				lx=#{lx},
+			</if>
+			<if test="should_return_date !=null and should_return_date != ''">
+				should_return_date=#{should_return_date},
+			</if>
+			<if test="status !=null and status != ''">
+				status=#{status},
+			</if>
+			<if test="actual_return_date !=null and actual_return_date != ''">
+				actual_return_date=#{actual_return_date},
+			</if>
+		</trim>
+		WHERE
+		`id` =#{id}
+	</update>
+
+	<select id="findById" resultType="Repayment_record">
+		SELECT
+		*
+		FROM
+		repayment_record
+		WHERE
+		id = #{id}
+	</select>
+</mapper>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="cn.p2p.dao.BorrowmarkMapper">
+	<insert id="add">
+		INSERT INTO `p2p_netloan`.`borrowmark` (
+		`m_id`,
+		`borrowmoney`,
+		`borrowtitle`,
+		`lp_id`,
+		`borrowexplain`,
+		`borrowterm`,
+		`rm_id`,
+		`loanfees`,
+		`annualrate`,
+		`activetime`,
+		`loanapplicationtime`,
+		`status`
+		)
+		VALUES
+		(
+		#{m_id},
+		#{borrowmoney},
+		#{borrowtitle},
+		#{lp_id},
+		#{borrowexplain},
+		#{borrowterm},
+		#{rm_id},
+		#{loanfees},
+		#{annualrate},
+		#{activetime},
+		#{loanapplicationtime},
+		#{status}
+		);
+	</insert>
+
+	<update id="update">
+		UPDATE `p2p_netloan`.`borrowmark`
+		<trim prefix="set" suffixOverrides=",">
+			<if test="m_id !=null and m_id !=''">
+				m_id=#{m_id},
+			</if>
+			<if test="borrowmoney !=null and borrowmoney !=''">
+				borrowmoney=#{borrowmoney},
+			</if>
+			<if test="borrowtitle !=null and borrowtitle !=''">
+				borrowtitle=#{borrowtitle},
+			</if>
+			<if test="lp_id !=null and lp_id !=''">
+				lp_id=#{lp_id},
+			</if>
+			<if test="borrowexplain !=null and borrowexplain !=''">
+				borrowexplain=#{borrowexplain},
+			</if>
+			<if test="borrowterm !=null and borrowterm !=''">
+				borrowterm=#{borrowterm},
+			</if>
+			<if test="rm_id !=null and rm_id !=''">
+				rm_id=#{rm_id},
+			</if>
+			<if test="loanfees !=null and loanfees !=''">
+				loanfees=#{loanfees},
+			</if>
+			<if test="annualrate !=null and annualrate !=''">
+				annualrate=#{annualrate},
+			</if>
+			<if test="activetime !=null and activetime !=''">
+				activetime=#{activetime},
+			</if>
+			<if test="loanapplicationtime !=null and loanapplicationtime !=''">
+				loanapplicationtime=#{loanapplicationtime},
+			</if>
+			<if test="status !=null and status !=''">
+				status=#{status},
+			</if>
+		</trim>
+		WHERE
+		`id` = #{id}
+	</update>
+
+	<select id="findPage" resultType="Borrowmark">
+		SELECT
+		b.*, lp.loanpurpose AS
+		lp_str,
+		rm.repaymentmethods AS rm_Str
+		FROM
+		borrowmark b
+		INNER JOIN
+		loanpurpose lp ON b.lp_id = lp.id
+		INNER JOIN repaymentmethods rm ON
+		b.rm_id = rm.id
+		WHERE
+		b.`status` = #{status}
+		ORDER BY
+		loanapplicationtime DESC
+		LIMIT #{from},#{pageSize}
+	</select>
+
+	<select id="findCount" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		borrowmark b
+		INNER JOIN loanpurpose lp ON b.lp_id = lp.id
+		INNER JOIN
+		repaymentmethods rm ON b.rm_id = rm.id
+		WHERE
+		b.`status` = #{status}
+	</select>
+
+	<select id="findById" resultType="Borrowmark">
+		SELECT
+		b.*, lp.loanpurpose AS
+		lp_str,
+		rm.repaymentmethods AS rm_Str
+		FROM
+		borrowmark b
+		INNER JOIN
+		loanpurpose lp ON b.lp_id = lp.id
+		INNER JOIN repaymentmethods rm ON
+		b.rm_id = rm.id
+		WHERE
+		b.id =
+		#{id}
+	</select>
+
+	<select id="findByMID" resultType="Borrowmark">
+		SELECT
+		*
+		FROM
+		borrowmark
+		WHERE
+		m_id = #{m_id}
+		ORDER BY
+		loanapplicationtime DESC
+		LIMIT
+		#{from},#{pageSize}
+	</select>
+
+	<select id="findByMIDCount" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		borrowmark
+		WHERE
+		m_id = #{m_id}
+	</select>
+
+	<delete id="del">
+		DELETE
+		FROM
+		borrowmark
+		WHERE
+		id = #{id}
+	</delete>
+
+	<select id="findAll" resultType="Borrowmark">
+		SELECT
+		*
+		FROM
+		borrowmark
+		ORDER BY
+		loanapplicationtime DESC
+		LIMIT
+		#{from},#{pageSize}
+	</select>
+
+	<select id="findAllCount" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		borrowmark
+	</select>
+</mapper>

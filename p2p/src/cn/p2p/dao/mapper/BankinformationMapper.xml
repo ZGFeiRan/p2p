@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   
+    "-//mybatis.org//DTD Mapper 3.0//EN"  
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.p2p.dao.BankinformationMapper">
+	<select id="getAllCount" resultType="java.lang.Integer">
+		SELECT
+		count(*)
+		FROM
+		bankinformation
+	</select>
+
+	<select id="findByPage" resultType="Bankinformation">
+		SELECT
+		*
+		FROM
+		bankinformation
+		LIMIT
+		#{from},
+		#{pageSize}
+	</select>
+
+	<select id="findById" resultType="Bankinformation">
+		SELECT
+		*
+		FROM
+		bankinformation
+		WHERE
+		id=#{id}
+	</select>
+
+	<insert id="add">
+		INSERT INTO `p2p_netloan`.`bankinformation` (
+		`bankcode`, `bankname`,`notes`)
+		VALUES
+		(
+		#{bankcode},#{bankname},
+		#{notes}
+		);
+	</insert>
+
+	<update id="update">
+		UPDATE `p2p_netloan`.`bankinformation`
+		<trim prefix="set" suffixOverrides=",">
+			<if test="bankcode!=null and bankcode!=''">
+				bankcode=#{bankcode},
+			</if>
+			<if test="bankname!=null and bankname!=''">
+				bankname=#{bankname},
+			</if>
+			<if test="notes!=null and notes!=''">
+				notes=#{notes},
+			</if>
+		</trim>
+		WHERE
+		id =#{id}
+	</update>
+
+	<delete id="delete">
+		DELETE
+		FROM
+		`p2p_netloan`.`bankinformation`
+		WHERE
+		id =
+		#{id}
+	</delete>
+
+	<select id="findAll" resultType="Bankinformation">
+		SELECT
+		*
+		FROM
+		`p2p_netloan`.`bankinformation`
+	</select>
+</mapper>
