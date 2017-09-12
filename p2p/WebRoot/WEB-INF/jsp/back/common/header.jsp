@@ -31,8 +31,8 @@ DOCTYPE html>
 			<div class="col-md-3 left_col">
 				<div class="left_col scroll-view">
 					<div class="navbar nav_title" style="border: 0;">
-						<a href="index.html" class="site_title"><i class="fa fa-cogs"></i>
-							<span>后台管理</span></a>
+						<a href="${pageContext.request.contextPath }/back/main"
+							class="site_title"><i class="fa fa-cogs"></i> <span>后台管理</span></a>
 					</div>
 
 					<div class="clearfix"></div>
@@ -81,7 +81,8 @@ DOCTYPE html>
 								<li><a><i class="fa fa-male"></i>会员管理<span
 										class="fa fa-chevron-down"></span></a>
 									<ul class="nav child_menu">
-										<li><a href="${pageContext.request.contextPath }/back/goMemberList">会员列表</a></li>
+										<li><a
+											href="${pageContext.request.contextPath }/back/goMemberList">会员列表</a></li>
 
 									</ul></li>
 								<li><a><i class="fa fa-cog"></i>系统管理 <span
