@@ -16,7 +16,7 @@
 	<div class="text-nav">
 		<ul class="clearfix">
 			<li><a class="text-link"
-				href="${pageContext.request.contextPath}/company/companyProfile">公司简介</a>
+				href="${pageContext.request.contextPath}/company/CompanyProfile">公司简介</a>
 			</li>
 			<li><a class="text-link"
 				href="${pageContext.request.contextPath}/company/TeamManagement">管理团队</a>
